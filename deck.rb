@@ -16,11 +16,4 @@ class Deck
 
     @cards.shuffle!
   end
-
-  # def deal(number)
-  #   number.times {@cards.shift.output_card}
-  # end
 end
-
-# @deck = Deck.new
-# @deck.deal(2)

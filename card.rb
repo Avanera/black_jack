@@ -7,7 +7,10 @@ class Card
     @suit = suit
     @value = @rank if @rank.class == Integer
     @value = 10 if @rank == 'J' || @rank == 'Q' || @rank == 'K'
-    @value = 11 if @rank == 'A' # TODO: value = 1 if player.points + value >21
+    if @rank == 'A'
+      @value = 11 || 1
+    end 
+    # && (@points + @value > 21)  #TODO value = 1 if player.points + value >21
   end
 
   def output_card

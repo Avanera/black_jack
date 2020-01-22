@@ -2,7 +2,7 @@
 
 class User < Player
   def move
-    # check_cards_amount
+    check_cards_amount
 
     # if skip was - no skip
     # if 3 cards - no add

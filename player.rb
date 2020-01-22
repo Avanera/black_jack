@@ -17,10 +17,10 @@ class Player
 
   def handle(number)
     number.times { @hand << Game.deck.cards.shift }
-    @hand.each { |card| @points += card.value }
+    @hand.each { |card| @points += card.value } # wrong REDO
     print "#{@name} has in hand "
     show_user_cards
-    puts " . #{points} points." if self.class == User
+    puts " . #{@points} points." if self.class == User
   end
 
   def show_user_cards
@@ -34,9 +34,9 @@ class Player
   end
 
   def change_player
-    @@dealer.move if self == @@user
-    # uninitialized class variable @@user in Player ???
-    @@user.move if self == @@dealer
+    # TODO ask for new game if
+    Game.dealer.move if self.class == User
+    Game.user.move if self.class == Dealer
   end
 
   def add
@@ -45,10 +45,14 @@ class Player
   end
 
   def open_cards
+    print 'You have '
     @hand.each(&:output_card)
+    print ', Dealer has '
+    Game.dealer.hand.each(&:output_card)
+    # TODO show points and winner, then bank - to winner, then ask fow new game
   end
 
   def check_cards_amount
-    open_cards if @@dealer.hand.size == 3 && @@user.hand.size == 3
+    open_cards if Game.dealer.hand.size == 3 && Game.user.hand.size == 3
   end
 end

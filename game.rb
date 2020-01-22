@@ -14,6 +14,14 @@ class Game
     @@deck
   end
 
+  def self.dealer
+    @@dealer
+  end
+
+  def self.user
+    @@user
+  end
+
   def start
     puts "Game started. Player1: #{@@user.name}, Player2: #{@@dealer.name}"
     @@user.check_bank
