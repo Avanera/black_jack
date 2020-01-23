@@ -5,6 +5,8 @@ require_relative 'player'
 require_relative 'user'
 require_relative 'dealer'
 require_relative 'card'
+require_relative 'bank'
 require_relative 'game'
+require_relative 'interface'
 
-Game.new.start
+Interface.new.start

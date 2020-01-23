@@ -1,42 +1,26 @@
 # frozen_string_literal: true
 
 class Game
-  attr_accessor :deck, :bank
+  attr_accessor :deck, :bank, :user, :dealer
 
-  def initialize
-    puts 'Enter your name'
-    @@user = User.new(gets.chomp)
-    @@dealer = Dealer.new
-    @bank = 0
+  def initialize(name)
+    @user = User.new(name)
+    @dealer = Dealer.new
+    @bank = Bank.new(0)
   end
 
-  def self.deck
-    @@deck
-  end
-
-  def self.dealer
-    @@dealer
-  end
-
-  def self.user
-    @@user
-  end
-
-  def start
-    puts "Game started. Player1: #{@@user.name}, Player2: #{@@dealer.name}"
-    @@user.check_bank
-    @@dealer.check_bank
-    @@deck = Deck.new
-    @@user.handle(2)
-    @@dealer.handle(2)
+  def new_game
     bet
-    @@user.move
+    @user.hand = []
+    @dealer.hand = []
+    @deck = Deck.new
+    @user.handle(@deck, 2)
+    @dealer.handle(@deck, 2)
   end
 
   def bet
-    @@user.bank -= 10
-    @@dealer.bank -= 10
-    self.bank += 20
-    puts "\nBets placed. #{self.bank} in game's bank."
+    @user.bank.debit(10)
+    @dealer.bank.debit(10)
+    @bank.credit(20)
   end
 end
