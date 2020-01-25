@@ -15,10 +15,17 @@ class Player
     number.times { @hand << deck.cards.shift }
   end
 
-  def check_score
+  def check_points
     s = 0
-    @hand.each { |card| s += card.value }
+    @hand.each { |card| s += card.value_of_rank(card.rank) }
+    s -= 10 if s > 21 && include_a?
     s
+  end
+
+  def include_a?
+    a = false
+    @hand.each { |card| a = true if card.rank == 'A' }
+    a
   end
 
   def show_cards
@@ -27,5 +34,9 @@ class Player
 
   def hide_cards
     @hand.map { |_card| '*' }.join(' ')
+  end
+
+  def cards_max?
+    hand.size == 3
   end
 end
