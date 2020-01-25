@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Deck
-  attr_accessor :cards
+  attr_reader :cards
 
   def initialize
     @cards = []

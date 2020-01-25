@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Game
-  attr_accessor :deck, :bank, :user, :dealer, :user_skip
+  attr_accessor :user_skip
+  attr_reader :deck, :bank, :user, :dealer
 
   def initialize(name)
     @user = User.new(name)
@@ -17,12 +18,6 @@ class Game
     @deck = Deck.new
     @user.handle(@deck, 2)
     @dealer.handle(@deck, 2)
-  end
-
-  def bet
-    @user.bank.debit(10)
-    @dealer.bank.debit(10)
-    @bank.credit(20)
   end
 
   def winner
@@ -53,5 +48,13 @@ class Game
 
   def bank_min?
     @dealer.bank.account < 10 || @user.bank.account < 10
+  end
+
+  protected
+
+  def bet
+    @user.bank.debit(10)
+    @dealer.bank.debit(10)
+    @bank.credit(20)
   end
 end

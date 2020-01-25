@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
 class Interface
-  attr_reader :game
 
   def initialize
     @game = Game.new(name)
-  end
-
-  def name
-    puts 'Enter your name'
-    gets.chomp
   end
 
   def start
     @game.new_game
     show_info
     round
+  end
+
+  protected
+
+  def name
+    puts 'Enter your name'
+    gets.chomp
   end
 
   def round
@@ -34,10 +35,6 @@ class Interface
   end
 
   def user_move
-    puts 'Enter 1 to skip a move.' unless @game.user_skip == true
-    puts 'Enter 2 to add a card.' unless @game.user.cards_max?
-    puts 'Enter 3 to open cards.'
-    choice = gets.chomp
     case choice
     when '1'
       raise "You can't skip a move more than once." if @game.user_skip == true
@@ -52,6 +49,13 @@ class Interface
   rescue RuntimeError => e
     puts e.inspect
     retry
+  end
+
+  def choice
+    puts 'Enter 1 to skip a move.' unless @game.user_skip == true
+    puts 'Enter 2 to add a card.' unless @game.user.cards_max?
+    puts 'Enter 3 to open cards.'
+    gets.chomp
   end
 
   def change_player(player)
