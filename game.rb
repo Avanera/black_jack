@@ -3,11 +3,13 @@
 class Game
   attr_accessor :user_skip
   attr_reader :deck, :bank, :user, :dealer
+  STAKE = 10
+  BET = STAKE * 2
 
   def initialize(name)
     @user = User.new(name)
     @dealer = Dealer.new
-    @bank = Bank.new(0)
+    @bank = Bank.new
   end
 
   def new_game
@@ -21,40 +23,40 @@ class Game
   end
 
   def winner
-    if (@dealer.check_points == @user.check_points) || (@user.check_points > 21 && @dealer.check_points > 21)
+    if (@dealer.points == @user.points) || (@user.exceed_limit? && @dealer.exceed_limit?)
       nil
     elsif @dealer.exceed_limit?
       @user
     elsif @user.exceed_limit?
       @dealer
-    elsif @dealer.check_points < @user.check_points
-      @user
-    elsif @dealer.check_points > @user.check_points
-      @dealer
+    else
+      [@user, @dealer].max_by(&:points)
+      # [@user, @dealer].max_by { |player| player.points }
+      # @dealer.points > @user.points ? @dealer : @user
     end
   end
 
   def return_stakes
-    @bank.debit(20)
-    @dealer.bank.credit(10)
-    @user.bank.credit(10)
+    @bank.debit(BET)
+    @dealer.bank.credit(STAKE)
+    @user.bank.credit(STAKE)
   end
 
   def stakes_to_winner(winner)
-    winner.bank.credit(20)
-    @bank.debit(20) unless @bank.account < 20
+    winner.bank.credit(BET)
+    @bank.debit(BET) unless @bank.balance < BET
     winner.score += 1
   end
 
   def bank_min?
-    @dealer.bank.account < 10 || @user.bank.account < 10
+    @dealer.bank.balance < STAKE || @user.bank.balance < STAKE
   end
 
   protected
 
   def bet
-    @user.bank.debit(10)
-    @dealer.bank.debit(10)
-    @bank.credit(20)
+    @user.bank.debit(STAKE)
+    @dealer.bank.debit(STAKE)
+    @bank.credit(BET)
   end
 end

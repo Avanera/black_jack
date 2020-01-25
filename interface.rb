@@ -27,8 +27,8 @@ class Interface
   def show_info
     puts '....----==NEW GAME==----....'
     puts "Dealer / #{@game.user.name} score: #{@game.dealer.score} / #{@game.user.score}"
-    puts "Bets made: #{@game.bank.account}$"
-    puts "#{@game.user.name} #{@game.user.bank.account}$ | Dealer #{@game.dealer.bank.account}$"
+    puts "Bets made: #{@game.bank.balance}$"
+    puts "#{@game.user.name} #{@game.user.bank.balance}$ | Dealer #{@game.dealer.bank.balance}$"
     puts "Your cards: #{@game.user.show_cards}"
     puts "Dealer's cards: #{@game.dealer.hide_cards}"
   end
@@ -80,14 +80,14 @@ class Interface
   end
 
   def check_cards_amount
-    if @game.user.cards_max? && @game.dealer.cards_max?
-      puts "\nBoth players have 3 cards in hands. Open cards."
-      open_cards
-    end
+    return unless @game.user.cards_max? && @game.dealer.cards_max?
+
+    puts "\nBoth players have 3 cards in hands. Open cards."
+    open_cards
   end
 
   def open_cards
-    puts "You have #{@game.user.show_cards}, #{@game.user.check_points} points. \n Dealer has #{@game.dealer.show_cards}, #{@game.dealer.check_points} points."
+    puts "You have #{@game.user.show_cards}, #{@game.user.points} points. \n Dealer has #{@game.dealer.show_cards}, #{@game.dealer.points} points."
     results
   end
 
@@ -101,12 +101,13 @@ class Interface
       puts 'The game ended in a tie. The stakes return to the players.'
     end
     puts 'New game? Enter 1 for Yes, 2 for No.'
-    start if gets.chomp == '1'
-    exit if gets.chomp == '2'
+    answer = gets.chomp
+    start if answer == '1'
+    exit if answer == '2'
   end
 
   def end_of_game
-    puts "End of game. Dealer score: #{@game.dealer.score}, #{@game.user.name} score: #{@game.user.score}."
-    exit
+    puts "Dealer score: #{@game.dealer.score}, #{@game.user.name} score: #{@game.user.score}.\n....----==END OF GAME==----...."
+    @game = Game.new(@game.user.name)
   end
 end

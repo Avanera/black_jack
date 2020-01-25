@@ -1,3 +1,22 @@
 
 Style/Documentation:
   Enabled: false
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - interface.rb
+
+Metrics/AbcSize:
+  Exclude:
+    - interface.rb
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - interface.rb
+
+Metrics/MethodLength:
+  Exclude:
+    - interface.rb
+
+

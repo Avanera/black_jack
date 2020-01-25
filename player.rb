@@ -6,18 +6,18 @@ class Player
 
   def initialize(name = 'Dealer')
     @name = name
-    @bank = Bank.new(100)
+    @bank = Bank.new(Bank::BALANCE)
     @hand = []
     @score = 0 # score of the game
   end
 
   def handle(deck, number = 1)
-    number.times { @hand << deck.cards.shift }
+    number.times { @hand << deck.give_card }
   end
 
-  def check_points
+  def points
     s = @hand.sum(&:value)
-    s -= 10 if s > 21 && include_a?
+    s -= 10 if s > 21 && include_ace?
     s
   end
 
@@ -26,7 +26,7 @@ class Player
   end
 
   def hide_cards
-    @hand.map { |_card| '*' }.join(' ')
+    @hand.map { '*' }.join(' ')
   end
 
   def cards_max?
@@ -34,12 +34,12 @@ class Player
   end
 
   def exceed_limit?
-    check_points > 21
+    points > 21
   end
 
   protected
 
-  def include_a?
-    @hand.any? { |card| card.rank == 'A' }
+  def include_ace?
+    @hand.any?(&:ace?) # @hand.any? { |card| card.ace? }
   end
 end

@@ -16,6 +16,10 @@ class Card
     "#{@rank}#{@suit} "
   end
 
+  def ace?
+    @rank == 'A'
+  end
+
   protected
 
   def value_of_rank(rank)
