@@ -23,9 +23,9 @@ class Game
   def winner
     if (@dealer.check_points == @user.check_points) || (@user.check_points > 21 && @dealer.check_points > 21)
       nil
-    elsif @dealer.check_points > 21
+    elsif @dealer.exceed_limit?
       @user
-    elsif @user.check_points > 21
+    elsif @user.exceed_limit?
       @dealer
     elsif @dealer.check_points < @user.check_points
       @user

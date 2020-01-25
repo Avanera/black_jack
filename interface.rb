@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Interface
-
   def initialize
     @game = Game.new(name)
   end
@@ -38,10 +37,12 @@ class Interface
     case choice
     when '1'
       raise "You can't skip a move more than once." if @game.user_skip == true
+
       @game.user_skip = true
       change_player(@game.user)
     when '2'
       raise 'You already have 3 cards' if @game.user.cards_max?
+
       add_card(@game.user)
     when '3'
       open_cards

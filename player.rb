@@ -8,7 +8,7 @@ class Player
     @name = name
     @bank = Bank.new(100)
     @hand = []
-    @score = 0 #score of the game
+    @score = 0 # score of the game
   end
 
   def handle(deck, number = 1)
@@ -16,7 +16,7 @@ class Player
   end
 
   def check_points
-    s = @hand.sum { |card| card.value }
+    s = @hand.sum(&:value)
     s -= 10 if s > 21 && include_a?
     s
   end
@@ -31,6 +31,10 @@ class Player
 
   def cards_max?
     hand.size == 3
+  end
+
+  def exceed_limit?
+    check_points > 21
   end
 
   protected
